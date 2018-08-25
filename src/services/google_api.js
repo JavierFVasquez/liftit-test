@@ -1,0 +1,30 @@
+import apisauce from 'apisauce'
+
+const create = (baseURL = 'https://maps.googleapis.com/maps/api/') => {
+    // timeout: 2000
+    const api = apisauce.create({
+        baseURL,
+        timeout: 20000,
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+        }
+    })
+
+    const places = keyword =>
+        api.get(`/place/nearbysearch/json?location=4.593019,-74.090947&radius=100000000&keyword=${keyword}&key=AIzaSyDxbFXNECkoRKjJr3f0L2fqSGVYcP_cQiA`, {})
+
+
+    const directions = (origin,destination) =>
+        api.get(`/directions/json?departure_time=now&origin=${origin}&destination=${destination}&key=AIzaSyDxbFXNECkoRKjJr3f0L2fqSGVYcP_cQiA`, {})
+
+    return {
+        places,
+        directions
+    }
+}
+
+// let's return back our create method as the default.
+export default {
+    create
+}
