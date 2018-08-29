@@ -5,14 +5,16 @@ const create = (baseURL = 'https://maps.googleapis.com/maps/api/') => {
     const api = apisauce.create({
         baseURL,
         timeout: 20000,
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json'
-        }
+        mode: 'no-cors',
+    })
+
+    api.setHeaders({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
     })
 
     const places = keyword =>
-        api.get(`/place/nearbysearch/json?location=4.593019,-74.090947&radius=100000000&keyword=${keyword}&key=AIzaSyDxbFXNECkoRKjJr3f0L2fqSGVYcP_cQiA`, {})
+        api.get(`/place/nearbysearch/json?location=4.593019,-74.090947&radius=10000&keyword=${keyword}&key=AIzaSyDxbFXNECkoRKjJr3f0L2fqSGVYcP_cQiA`, {})
 
 
     const directions = (origin,destination) =>

@@ -36,6 +36,7 @@ class App extends React.Component {
     }
 
     render() {
+
         if (!this.state.loading) {
             return (
                 <Provider store={store}>

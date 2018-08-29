@@ -31,8 +31,8 @@ class AppRouter extends Component {
                     <Route
                         path={`/login`}
                         component={Login} />
-                    {/*<Route path="/" component={Login}/>*/}
                     <Route path="/start" component={Start}/>
+                    <Route exact path="/" component={Login}/>
                         {/*<Route*/}
                             {/*path={`/available/:category_id`}*/}
                             {/*component={Login} />*/}

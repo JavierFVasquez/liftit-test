@@ -5,6 +5,9 @@ import Input from '../components/Input'
 import Button from "../components/Button";
 import LogoImage from '../assets/images/jfvr_logo.png'
 import { GoogleMap, Marker } from "react-google-maps"
+import LoginActions from "../reducers/login.reducer";
+import {connect} from "react-redux";
+import {Redirect, Switch} from "react-router-dom";
 
 const LoginWrapper = styled.div`
 width: 100%;
@@ -44,37 +47,76 @@ const Logo = styled.img`
  
 `
 
+const Error = styled.h4`
+  text-align: center;
+  color: red;
+ 
+`
+
 class Login extends Component{
 
+    state={
+        user:'',
+        pass:''
+    }
+
+
     render(){
-        return(
-            <LoginWrapper>
-                <LoginContainer>
-                    <Logo
-                    src={LogoImage}
-                    />
-                    <LoginInputContainer>
-                    <Input
-                        placeholder={'Usuario'}
-                        onChange={(event) => {
-
-                        }}/>
-                    <Input
-                        placeholder={'Contraseña'}
-                        onChange={(event) => {
-
-                        }}/>
-                    <Button
-                        onClick={() => {
-
-                        }}>
-                        {'Entrar'}
-                    </Button>
-                    </LoginInputContainer>
-                </LoginContainer>
-            </LoginWrapper>
-        )
+        const isAuthenticated = ((localStorage.getItem('id_token') ? true : false)
+            || this.props.loginData.data && this.props.loginData.data.token) ;
+        if (isAuthenticated) {
+            return (
+                <Switch>
+                    <Redirect to={{
+                        pathname: '/start'
+                    }}/>
+                </Switch>
+            );
+        }else {
+            return (
+                <LoginWrapper>
+                    <LoginContainer>
+                        <Logo
+                            src={LogoImage}
+                        />
+                        <LoginInputContainer>
+                            <Input
+                                placeholder={'Usuario'}
+                                onChange={(event) => {
+                                    this.setState({
+                                        user: event.target.value
+                                    })
+                                }}/>
+                            <Input
+                                type={'password'}
+                                placeholder={'Contraseña'}
+                                onChange={(event) => {
+                                    this.setState({
+                                        pass: event.target.value
+                                    })
+                                }}/>
+                            <Button
+                                onClick={() => {
+                                    this.props.login(this.state.user, this.state.pass)
+                                }}>
+                                {'Entrar'}
+                            </Button>
+                            <Error>{this.props.loginData.data && this.props.loginData.data.message}</Error>
+                        </LoginInputContainer>
+                    </LoginContainer>
+                </LoginWrapper>
+            )
+        }
     }
 }
 
-export default Login
+/* Container */
+const mapStateToProps = state => ({
+    loginData: state.login.get('loginData'),
+})
+
+const mapDispatchToProps = dispatch => ({
+    login: (user,pass) => dispatch(LoginActions.login(user,pass)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

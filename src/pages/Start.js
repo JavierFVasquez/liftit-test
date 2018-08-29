@@ -7,6 +7,8 @@ import LogoImage from '../assets/images/logo_jfvr_orange.png'
 import { GoogleMap, Marker ,withGoogleMap, withScriptjs} from "react-google-maps"
 import {connect} from "react-redux";
 import PlacesActions from '../reducers/places.reducer'
+import LoginActions from '../reducers/login.reducer'
+import {Redirect, Switch} from "react-router-dom";
 
 const StartWrapper = styled.div`
 width: 100%;
@@ -83,58 +85,80 @@ class Start extends Component{
 
         }
     }
+    componentDidMount(){
+    }
 
     render(){
+        const isAuthenticated = ((localStorage.getItem('id_token') ? true : false)
+            || this.props.loginData && this.props.loginData.data && this.props.loginData.data.token) ;
+        if (!isAuthenticated) {
+            return (
+                <Switch>
+                    <Redirect to={{
+                        pathname: '/login'
+                    }}/>
+                </Switch>
+            );
+        }else {
+            return (
+                <StartWrapper>
+                    <StartContainer>
+                        <Logo
+                            src={LogoImage}
+                        />
+                        <StartInputContainer>
+                            <Input
+                                value={this.props.keywordOrigin}
+                                placeholder={'Lugar de inicio'}
+                                onChange={(event) => {
+                                    this.props.setKeywordOrigin(event.target.value)
+                                }}/>
+                            <Input
+                                value={this.props.keywordDestination}
+                                placeholder={'Lugar de destino'}
+                                onChange={(event) => {
+                                    this.props.setKeywordDestination(event.target.value)
+                                }}/>
+                            <Button
+                                onClick={() => {
+                                    this.props.placesOrigin()
+                                    this.props.placesDestination()
+                                }}>
+                                {'Buscar'}
+                            </Button>
 
-        return(
-            <StartWrapper>
-                <StartContainer>
-                    <Logo
-                        src={LogoImage}
-                    />
-                    <StartInputContainer>
-                        <Input
-                            placeholder={'Lugar de inicio'}
-                            onChange={(event) => {
-                                this.props.setKeywordOrigin(event.target.value)
-                            }}/>
-                        <Input
-                            placeholder={'Lugar de destino'}
-                            onChange={(event) => {
-                                this.props.setKeywordDestination(event.target.value)
-                            }}/>
-                        <Button
-                            onClick={() => {
-                                this.props.placesOrigin()
-                                this.props.placesDestination()
-                            }}>
-                            {'Buscar'}
-                        </Button>
+                            <Text>
+                                {`Tiempo: ${this.props.directionsData.routes && this.props.directionsData.routes.length > 0 ? this.props.directionsData.routes[0].legs[0].duration.text : '--'}`}
+                            </Text>
+                            <Text>
+                                {`Distancia: ${this.props.directionsData.routes && this.props.directionsData.routes.length > 0 ? this.props.directionsData.routes[0].legs[0].distance.text : '--'}`}
+                            </Text>
 
-                        <Text>
-                            {`Tiempo: ${this.props.directionsData.routes && this.props.directionsData.routes.length > 0 ? this.props.directionsData.routes[0].legs[0].duration.text : '--'}`}
-                        </Text>
-                        <Text>
-                            {`Distancia: ${this.props.directionsData.routes && this.props.directionsData.routes.length > 0  ? this.props.directionsData.routes[0].legs[0].distance.text : '--'}`}
-                        </Text>
+                            <Button
+                                onClick={() => {
+                                    this.props.logout()
+                                }}>
+                                {'Cerrar Sesión'}
+                            </Button>
 
-                    </StartInputContainer>
-                </StartContainer>
-                <MapContainer>
-                    <MyMapComponent
-                        latOrigin={this.props.placesOriginData.length > 0 ? this.props.placesOriginData[0].geometry.location.lat : 0.0}
-                        lngOrigin={this.props.placesOriginData.length > 0 ? this.props.placesOriginData[0].geometry.location.lng : 0.0}
-                        latDestination={this.props.placesDestinationData.length > 0 ? this.props.placesDestinationData[0].geometry.location.lat : 0.0}
-                        lngDestination={this.props.placesDestinationData.length > 0 ? this.props.placesDestinationData[0].geometry.location.lng : 0.0}
-                        isMarkerShown
-                        googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxbFXNECkoRKjJr3f0L2fqSGVYcP_cQiA&v=3.exp&libraries=geometry,drawing,places"
-                        loadingElement={<div style={{ height: `100%`, width: `100%` }} />}
-                        containerElement={<div style={{ height: `100%`, width: `100%`  }} />}
-                        mapElement={<div style={{ height: `100%` }} />}
-                    />
-                </MapContainer>
-            </StartWrapper>
-        )
+                        </StartInputContainer>
+                    </StartContainer>
+                    <MapContainer>
+                        <MyMapComponent
+                            latOrigin={this.props.placesOriginData.length > 0 ? this.props.placesOriginData[0].geometry.location.lat : 0.0}
+                            lngOrigin={this.props.placesOriginData.length > 0 ? this.props.placesOriginData[0].geometry.location.lng : 0.0}
+                            latDestination={this.props.placesDestinationData.length > 0 ? this.props.placesDestinationData[0].geometry.location.lat : 0.0}
+                            lngDestination={this.props.placesDestinationData.length > 0 ? this.props.placesDestinationData[0].geometry.location.lng : 0.0}
+                            isMarkerShown
+                            googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxbFXNECkoRKjJr3f0L2fqSGVYcP_cQiA&v=3.exp&libraries=geometry,drawing,places"
+                            loadingElement={<div style={{height: `100%`, width: `100%`}}/>}
+                            containerElement={<div style={{height: `100%`, width: `100%`}}/>}
+                            mapElement={<div style={{height: `100%`}}/>}
+                        />
+                    </MapContainer>
+                </StartWrapper>
+            )
+        }
     }
 }
 
@@ -146,6 +170,7 @@ const mapStateToProps = state => ({
     placesDestinationData: state.places.get('placesDestination'),
     keywordOrigin: state.places.get('keywordOrigin'),
     keywordDestination: state.places.get('keywordDestination'),
+    loginData: state.login.get('loginData'),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -154,6 +179,7 @@ const mapDispatchToProps = dispatch => ({
     placesDestination: () => dispatch(PlacesActions.placesDestination()),
     setKeywordOrigin: keyword => dispatch(PlacesActions.setKeywordOrigin(keyword)),
     setKeywordDestination: keyword => dispatch(PlacesActions.setKeywordDestination(keyword)),
+    logout: () => dispatch(LoginActions.logout()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Start)

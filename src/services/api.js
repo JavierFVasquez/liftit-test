@@ -1,6 +1,6 @@
 import apisauce from 'apisauce'
 
-const create = (baseURL = 'http://sandbox.pads.com.co/api/') => {
+const create = (baseURL = 'http://localhost:3005/') => {
     // timeout: 2000
     const api = apisauce.create({
         baseURL,
@@ -11,16 +11,12 @@ const create = (baseURL = 'http://sandbox.pads.com.co/api/') => {
         }
     })
 
-    const setToken = authorization =>
-        authorization ? { headers: { authorization } } : {}
-
-    const listings = authorization =>
-        api.get('/listings?published=true&transactions=rent_out&max=10&lng=4.707228&lat=-74.044162', {}, setToken(authorization))
-
+    const login = (user,pass) =>
+            api.post('/login', {user: user, pass: pass})
 
 
     return {
-        listings,
+        login,
     }
 }
 
