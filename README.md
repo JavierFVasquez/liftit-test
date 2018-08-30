@@ -17,6 +17,6 @@ Login (USERNAME: liftit PASSWORD: test)
 Please enable CORS Chrome Extension when you are logged in
 
 
-![Alt Text](https://github.com/JavierFVasquez/liftit-test/blob/master/src/assets/liftit-test.gif)
+![alt text](https://github.com/JavierFVasquez/liftit-test/blob/advance/src/assets/liftit-test.gif)
 
 (Chrome CORS Extension : `https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi`)
