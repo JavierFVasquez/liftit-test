@@ -14,7 +14,7 @@ const create = (baseURL = 'https://maps.googleapis.com/maps/api/') => {
     })
 
     const places = keyword =>
-        api.get(`/place/nearbysearch/json?location=4.593019,-74.090947&radius=10000&keyword=${keyword}&key=AIzaSyDxbFXNECkoRKjJr3f0L2fqSGVYcP_cQiA`, {})
+        api.get(`/place/nearbysearch/json?location=4.661934,-74.097383&radius=100000&strictbounds&language=es&keyword=${keyword}&key=AIzaSyDxbFXNECkoRKjJr3f0L2fqSGVYcP_cQiA`, {})
 
 
     const directions = (origin,destination) =>

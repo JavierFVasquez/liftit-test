@@ -20,6 +20,7 @@ export default function* root() {
         takeEvery(PlacesTypes.PLACES_DESTINATION, getPlacesDestination, places_api),
         takeEvery(PlacesTypes.DIRECTIONS, getDirections, places_api),
         takeEvery(PlacesTypes.SET_PLACES_ORIGIN, getDirections, places_api),
+        takeEvery(PlacesTypes.SET_PLACES_DESTINATION, getDirections, places_api),
         takeEvery(LoginTypes.LOGIN, login, api),
     ])
 }

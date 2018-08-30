@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mapbox/polyline": "^1.0.0",
     "apisauce": "^0.16.0",
     "immutable": "^3.8.2",
     "json-server": "^0.14.0",
@@ -13,6 +14,9 @@
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
+    "reactotron-apisauce": "^2.1.0",
+    "reactotron-redux": "^2.1.0",
+    "reactotron-redux-saga": "^2.1.0",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
@@ -20,13 +24,14 @@
     "styled-components": "^3.4.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "NODE_ENV=development react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "server": "json-server --watch db.json --port 3005 --middlewares mockapi/login.middleware.js"
   },
   "devDependencies": {
+    "reactotron-react-js": "^1.13.0",
     "redux-devtools": "^3.4.1"
   }
 }

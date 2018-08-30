@@ -8,6 +8,7 @@ import {createLogger} from 'redux-logger';
 import Router from './navigation/router'
 import styled, { injectGlobal } from 'styled-components';
 import { normalizeCss } from './utils/css/normalize-css';
+import './config/ReactotronConfig'
 
 injectGlobal`
   ${normalizeCss}

@@ -20,8 +20,8 @@ export default Creators
 export const INITIAL_STATE = Map({
     placesOrigin: [],
     placesDestination: [],
-    keywordDestination: 'Cr 68b 76a-42',
-    keywordOrigin: 'linktic',
+    keywordDestination: '',
+    keywordOrigin: '',
     directionsData: []
 })
 
