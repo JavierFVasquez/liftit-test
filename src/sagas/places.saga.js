@@ -38,8 +38,8 @@ export function* getPlacesDestination(api, action) {
     }
 }
 export function* getDirections(api, action) {
-    const origin = yield select(Utils.getDestinationCoords)
-    const destination = yield select(Utils.getOriginCoords)
+    const origin = yield select(Utils.getOriginCoords)
+    const destination = yield select(Utils.getDestinationCoords)
     const response = yield call(api.directions, origin,destination)
     switch (response.status) {
         case 200:
